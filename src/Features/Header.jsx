@@ -1,10 +1,6 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { useState } from "react";
-import Modal from "./Modal";
 
-function Header() {
-
-    const [isAddOpen, setIsAddOpen] = useState(false)
+function Header({ onClick }) {
 
     return <>
         <header className="w-full max-w-7xl mx-auto space-y-8 mb-10">
@@ -13,19 +9,12 @@ function Header() {
             </h1>
             <button
                 className="bg-sky-500 w-52 p-3 rounded-md text-white flex items-center justify-center gap-3 cursor-pointer"
-                onClick={() => { setIsAddOpen(true) }}
+                onClick={onClick}
             >
                 <PlusOutlined style={{ fontSize: '30px', color: 'white' }} />
                 <span>Add Domain</span>
             </button>
         </header>
-        {
-            isAddOpen
-            && <Modal
-                open={isAddOpen}
-                onClose={() => { setIsAddOpen(false) }}
-            />
-        }
     </>
 }
 

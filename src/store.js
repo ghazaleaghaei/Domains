@@ -1,5 +1,5 @@
-import { configureStore } from "@reduxjs/toolkit";
-import { domainsApi } from "./Hooks/useGetDomains";
+import { configureStore } from '@reduxjs/toolkit';
+import { domainsApi } from "./Services/domainsApi";
 
 export const store = configureStore({
     reducer: {

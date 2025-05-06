@@ -7,7 +7,7 @@ function Select({ label, name, selectItem, handleChange, options }) {
             </label>
             <select
                 id={name}
-                className="rounded-md p-3 outline-none border border-gray-200 text-gray-500"
+                className="rounded-md p-3 outline-none border border-gray-200 text-gray-500 w-full"
                 value={selectItem}
                 onChange={handleChange}
             >
@@ -15,7 +15,10 @@ function Select({ label, name, selectItem, handleChange, options }) {
                     choose status
                 </option>
                 {
-                    options?.map((option) => <option key={option.id} value={option.name}>
+                    options?.map((option) => <option
+                        key={option.id}
+                        value={option.name}
+                    >
                         {option.name}
                     </option>)
                 }

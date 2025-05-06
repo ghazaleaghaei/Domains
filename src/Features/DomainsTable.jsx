@@ -1,15 +1,16 @@
-import { useGetDomainsQuery } from "../Hooks/useGetDomains";
 import DomainRow from "./DomainRow"
-import Table from "./Table"
+import Table from "../Components/Table"
+import { useGetDomainsQuery } from "../Services/domainsApi";
 
-function DomainsTable() {
+function DomainsTable({ editHandler }) {
 
-    const { data, isLoading, isError } = useGetDomainsQuery();
+    const { data, refetch, isLoading, isError } = useGetDomainsQuery();
+
 
     if (isLoading) return <p>loading....</p>
     if (!data.length) return <p> not found domains</p>
 
-    return (
+    return <>
         <Table>
             <Table.Header>
                 <th>Domain URL</th>
@@ -25,11 +26,12 @@ function DomainsTable() {
                             domain={domain}
                             index={index}
                             key={domain.id}
+                            editHandler={editHandler}
                         />
                     ))
                 }
             </Table.Body>
         </Table>
-    )
+    </>
 }
 export default DomainsTable

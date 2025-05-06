@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import TextField from "./TextField";
 import Select from "./Select";
 import CheckBox from "./CheckBox";
-import { useCreateDomainMutation } from "../Hooks/useAddDomain";
 import toast from "react-hot-toast";
+import { useCreateDomainMutation, useEditDomainMutation } from "../Services/domainsApi";
 
 const statusOptions = [
     {
@@ -26,16 +26,21 @@ const statusOptions = [
 function Form({ onClose, domainToEdit = {} }) {
 
     const { id: editId } = domainToEdit;
-    const [createDomain] = useCreateDomainMutation();
+    const isEditingDomain = Boolean(editId);
 
-    const isEditingProject = Boolean(editId);
+    const [createDomain, { isLoading: isCreating }] = useCreateDomainMutation();
+    const [editDomain, { isLoading: isEditing }] = useEditDomainMutation();
 
-    const [formData, setFormData] = useState({
-        domain: "",
-        isActive: false,
-        createdDate: Math.floor(Date.now() / 1000),
-        status: "",
-    })
+    const [formData, setFormData] = useState(() =>
+        isEditingDomain
+            ? domainToEdit
+            : {
+                domain: "",
+                isActive: false,
+                createdDate: new Date().getTime(),
+                status: "",
+            }
+    )
 
     const isFormValid = Object.values(formData).every(value => value !== '');
 
@@ -44,20 +49,57 @@ function Form({ onClose, domainToEdit = {} }) {
     }
 
     const handleSubmit = async (e) => {
+
         e.preventDefault()
+
         try {
-            const response = await createDomain(formData).unwrap();
-            console.log(response);
-            toast.success('Item created successfully!');
+
+            if (isEditingDomain) {
+                await editDomain({
+                    id: editId,
+                    ...formData
+                }).unwrap();
+            } else {
+                await createDomain(formData).unwrap();
+            }
+
+            toast.success(
+                isEditingDomain
+                    ? "domain edited successfully!"
+                    : "domain created successfully!"
+            );
+
         } catch (err) {
-            toast.error('Failed to create item.');
+            if (err.status === 400) {
+                toast.error("invalid inputs")
+            } else if (err.status === 404) {
+                toast.error("not found domain")
+            } else {
+                toast.error(
+                    isEditingDomain
+                        ? "Failed to edit domain."
+                        : "Failed to create domain."
+                );
+            }
         }
+
+        setFormData({
+            domain: "",
+            isActive: false,
+            createdDate: new Date().getTime(),
+            status: "",
+        })
+
         onClose()
     }
 
 
     return <section className="p-10 w-full h-full bg-white space-y-4">
-        <h2 className="text-2xl font-medium">Add domain</h2>
+
+        <h2 className="text-2xl font-medium">
+            {isEditingDomain ? "Edit domain" : "Add domain"}
+        </h2>
+
         <form
             className="flex flex-col h-full"
             onSubmit={handleSubmit}
@@ -78,18 +120,29 @@ function Form({ onClose, domainToEdit = {} }) {
                 <CheckBox
                     id="isActive"
                     name="isActive"
-                    value={formData.isActive}
-                    onChange={(e) => setFormData({ ...formData, isActive: e.target.value })}
+                    checked={formData.isActive}
+                    onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
                     label="isActive"
                 />
             </div>
-            <button
-                className="bg-sky-500 text-white p-2 rounded-ful disabled:opacity-50 duration-300 w-32 h-16 mb-10"
-                type="submit"
-                disabled={!isFormValid}
-            >
-                Add
-            </button>
+
+            <div className="flex justify-end items-center gap-4 [&>button]:p-2 [&>button]:rounded [&>button]:disabled:opacity-50 [&>button]:duration-300 [&>button]:w-32 [&>button]:h-14 mb-10 [&>button]:cursor-pointer">
+                <button
+                    className="border border-gray-200"
+                    disabled={isCreating || isEditing}
+                    onClick={onClose}
+                >
+                    Cancel
+                </button>
+                <button
+                    className="bg-sky-500 text-white"
+                    type="submit"
+                    disabled={!isFormValid || isCreating || isEditing}
+                >
+                    {isEditingDomain ? "Edit" : "Add"}
+                </button>
+            </div>
+
         </form>
     </section>
 }

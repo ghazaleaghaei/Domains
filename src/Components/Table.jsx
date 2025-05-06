@@ -1,6 +1,6 @@
 function Table({ children }) {
     return (
-        <div className="max-w-7xl mx-auto overflow-x-auto">
+        <div className="max-w-7xl mx-auto h-fit min-h-screen overflow-x-auto">
             <table className="min-w-full table-auto">
                 {children}
             </table>

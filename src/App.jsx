@@ -1,5 +1,5 @@
 import { Toaster } from "react-hot-toast"
-import Domains from "./Components/Domains"
+import Domains from "./Features/Domains"
 
 function App() {
 
