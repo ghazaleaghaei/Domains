@@ -6,8 +6,6 @@ import DeleteModal from "../Components/DeleteModal";
 
 function DomainRow({ domain, editHandler }) {
 
-    console.log(domain)
-
     const [isOpen, setIsOpen] = useState(false)
     const [isDeleteOpen, setIsDeleteOpen] = useState(false)
     const { modalRef, toggleRef } = useOutsideClick(() => setIsOpen(false));

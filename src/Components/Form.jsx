@@ -94,17 +94,17 @@ function Form({ onClose, domainToEdit = {} }) {
     }
 
 
-    return <section className="p-10 w-full h-full bg-white space-y-4">
+    return <section className="p-4 sm:p-10 w-64 sm:w-96 md:w-[50rem] h-full bg-white space-y-4">
 
         <h2 className="text-2xl font-medium">
             {isEditingDomain ? "Edit domain" : "Add domain"}
         </h2>
 
         <form
-            className="flex flex-col h-full"
+            className="flex flex-col h-full w-full"
             onSubmit={handleSubmit}
         >
-            <div className="flex-1">
+            <div className="flex-1 w-full">
                 <TextField
                     name="domain"
                     onChange={handelChange}

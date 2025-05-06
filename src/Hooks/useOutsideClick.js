@@ -18,7 +18,6 @@ export default function useOutsideClick(handler, listenCapturing = true) {
         document.addEventListener("click", handleClick, listenCapturing);
 
         return () => document.removeEventListener("click", handleClick, listenCapturing);
-        //true is for to stop running event from bubbling faze. reade about bubbling,capturing faze in js.
 
     }, [handler, listenCapturing])
     return { modalRef, toggleRef };

@@ -2,7 +2,7 @@ import { CloseOutlined } from '@ant-design/icons';
 import Form from "./Form"
 
 function Modal({ onClose, domainToEdit }) {
-    return (<div className="w-screen h-screen fixed top-0 start-0 z-40 grid grid-cols-[20%_80%] lg:grid-cols-[55%_45%]">
+    return (<div className="w-screen h-screen fixed top-0 start-0 z-40 flex">
         <div
             className="w-full h-full bg-black/50 p-8"
             onClick={onClose}

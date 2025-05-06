@@ -9,7 +9,6 @@ function Table({ children }) {
 }
 export default Table;
 
-
 function TableHeader({ children }) {
     return (
         <thead>
