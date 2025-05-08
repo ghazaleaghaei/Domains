@@ -8,7 +8,9 @@ function DomainsTable({
     sorted,
 }) {
 
-    const { data, refetch, isLoading, isError } = useGetDomainsQuery();
+    const { data, isLoading, isError } = useGetDomainsQuery(undefined, {
+        pollingInterval: 10000,
+    });
 
     const domains = data || []
 
@@ -34,6 +36,7 @@ function DomainsTable({
     });
 
     if (isLoading) return <p>loading....</p>
+    if (isError) return <p>error</p>
     if (!domains.length || !filteredDomains.length) return <p> not found domains</p>
 
     return <>
